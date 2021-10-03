@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_estate_price">物件価格/本体価格</string>
+    <string name="label_price_unit">万円</string>
+    <string name="label_occupied_area">専有/延床面積</string>
+    <string name="label_occupied_area_unit_m2">m2</string>
+</resources>

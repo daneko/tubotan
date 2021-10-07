@@ -1,13 +1,23 @@
 package com.github.daneko.tubotan.ui.tubotanka
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -15,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import arrow.core.Either
 import arrow.core.computations.either
-import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.rightIfNotNull
 import com.github.daneko.tubotan.R
@@ -23,20 +32,21 @@ import com.github.daneko.tubotan.model.estate.EstatePrice
 import com.github.daneko.tubotan.model.estate.OccupiedArea
 import kotlinx.coroutines.launch
 
-
 @Preview
 @Composable
 fun TuboTanka() {
     var estatePrice: Either<String, EstatePrice> by remember { mutableStateOf("".left()) }
     var occupiedArea: Either<String, OccupiedArea> by remember { mutableStateOf("".left()) }
-    val tuboTankaResult: Either<String, String> by remember(estatePrice, occupiedArea) {
-        derivedStateOf {
-            estatePrice.flatMap { price ->
-                occupiedArea.map { area ->
-                    val tuboTanka = (price.value.toDouble() / area.getTuboValue()) / 10000.0
-                    "%.2f".format(tuboTanka)
-                }
-            }
+    val tuboTankaResult: Either<String, String> by produceState<Either<String, String>>(
+        initialValue = "".left(),
+        key1 = estatePrice,
+        key2 = occupiedArea,
+    ) {
+        value = either {
+            val price = estatePrice.bind()
+            val area = occupiedArea.bind()
+            val tuboTanka = (price.value.toDouble() / area.getTuboValue()) / 10000.0
+            "%.2f".format(tuboTanka)
         }
     }
 
@@ -51,15 +61,14 @@ fun TuboTanka() {
             occupiedArea = it
         }
 
-        when (val res = tuboTankaResult) {
-            is Either.Left -> {
-            }
-            is Either.Right -> {
+        tuboTankaResult.fold(
+            ifLeft = {},
+            ifRight = {
                 Text(
-                    text = res.value
+                    text = it
                 )
             }
-        }
+        )
     }
 }
 

@@ -1,6 +1,6 @@
 package com.github.daneko.tubotan.model.estate
 
-class OccupiedArea internal constructor(
+data class OccupiedArea internal constructor(
     private val m2: Double,
     private val tubo: Double,
 ) {
@@ -16,7 +16,6 @@ class OccupiedArea internal constructor(
     fun getTuboValue(): Double {
         return tubo
     }
-
 
     companion object {
         fun createByM2(m2: Double) = OccupiedArea(

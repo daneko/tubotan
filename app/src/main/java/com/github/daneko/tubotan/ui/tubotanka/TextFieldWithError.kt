@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -28,7 +27,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import arrow.core.Either
-import arrow.core.computations.either
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
@@ -38,7 +37,7 @@ import kotlinx.coroutines.launch
 fun <A, B> TextFieldWithError(
     modifier: Modifier = Modifier,
     initValue: TextFieldValue = TextFieldValue(),
-    onValueChange: (TextFieldValue) -> Either<A, B>,
+    onValueChange: suspend CoroutineScope.(TextFieldValue) -> Either<A, B>,
     errorValue: (A) -> AnnotatedString,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -58,9 +57,9 @@ fun <A, B> TextFieldWithError(
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
 ) {
 
-    var valueInternal by rememberSaveable { mutableStateOf(initValue) }
-    var isError by rememberSaveable { mutableStateOf(false) }
-    var errorMsg by rememberSaveable { mutableStateOf(AnnotatedString("")) }
+    var valueInternal by remember { mutableStateOf(initValue) }
+    var isError by remember { mutableStateOf(false) }
+    var errorMsg by remember { mutableStateOf(AnnotatedString("")) }
     val scope = rememberCoroutineScope()
     Column {
         TextField(
@@ -68,9 +67,7 @@ fun <A, B> TextFieldWithError(
             onValueChange = { newValue ->
                 valueInternal = newValue
                 scope.launch {
-                    either<A, B> {
-                        onValueChange(newValue).bind()
-                    }.run {
+                    onValueChange(newValue).run {
                         if (this is Either.Left) {
                             errorMsg = errorValue(this.value)
                         }

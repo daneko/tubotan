@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import arrow.core.Either
@@ -56,11 +58,15 @@ fun TuboTankaInverse() {
         OccupiedAreaInput {
             occupiedArea = it
         }
+        Spacer(modifier = Modifier.height(24.dp))
         result.fold(
             ifLeft = {},
             ifRight = {
                 Text(
-                    text = it
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "$it ${stringResource(id = R.string.label_price_unit)}",
+                    style = MaterialTheme.typography.subtitle1,
+                    textAlign = TextAlign.Center,
                 )
             },
         )

@@ -1,6 +1,6 @@
 package com.github.daneko.tubotan.model.estate
 
-data class OccupiedArea internal constructor(
+class OccupiedArea internal constructor(
     private val m2: Double,
     private val tubo: Double,
 ) {

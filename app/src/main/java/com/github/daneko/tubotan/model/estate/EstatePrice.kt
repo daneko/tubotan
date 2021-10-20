@@ -1,6 +1,7 @@
 package com.github.daneko.tubotan.model.estate
 
-class EstatePrice internal constructor(
+@JvmInline
+value class EstatePrice internal constructor(
     val value: Int,
 ) {
     init {

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "512267165149",
+    "project_id": "tubotan-dev",
+    "storage_bucket": "tubotan-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512267165149:android:bac6483db6185d861b2a34",
+        "android_client_info": {
+          "package_name": "com.github.daneko.tubotan.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512267165149-jkpj4hv6grgu9ti74mtmh622etcqcicp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.daneko.tubotan.dev",
+            "certificate_hash": "ed3026e02d97ec575d5f4fabf7a55af8b2741bac"
+          }
+        },
+        {
+          "client_id": "512267165149-7m93c1e8pqamvg9gprs0fg2c6qhna4h0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ0-XgykS0DfCySeY2U4Pgg9FUz0iho0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512267165149-7m93c1e8pqamvg9gprs0fg2c6qhna4h0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

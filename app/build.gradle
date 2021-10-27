@@ -4,6 +4,13 @@ plugins {
     id 'org.jmailen.kotlinter'
 }
 
+def keysPropsFile = file("$rootDir/keys.props")
+if (!keysPropsFile.exists()) {
+    throw new GradleException("create keys.props")
+}
+def keysProps = new Properties()
+keysPropsFile.withInputStream { keysProps.load(it) }
+
 android {
     compileSdk 31
 
@@ -20,12 +27,35 @@ android {
         }
     }
 
-    buildTypes {
+    signingConfigs {
+        debug {
+            storeFile new File(file(keysProps.getProperty("keys_dir")), "dev.keystore")
+            storePassword "krbVTVSq8qhO"
+            keyAlias "key_alias"
+            keyPassword "krbVTVSq8qhO"
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            storeFile new File(file(keysProps.getProperty("keys_dir")), "product.keystore")
+            storePassword "krbVTVSq8qhO"
+            keyAlias "key_alias"
+            keyPassword "krbVTVSq8qhO"
         }
     }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

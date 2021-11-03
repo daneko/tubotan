@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.daneko.tubotan">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -10,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tubotan">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -24,8 +27,8 @@
 
         <!--https://developers.google.com/admob/android/banner?authuser=0#always_test_with_test_ads-->
         <meta-data
-            android:name="com.google.android.gms.ads.com.github.daneko.tubotan"
-            android:value="ca-app-pub-3940256099942544/6300978111" />
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 
 </manifest>

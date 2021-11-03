@@ -1,5 +1,8 @@
 package com.github.daneko.tubotan.model.rent
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 /**
  * @param baseRent 月家賃
  * @param managementFee 月管理費等
@@ -7,13 +10,14 @@ package com.github.daneko.tubotan.model.rent
  * @param oneshotFee 契約時に掛かるその他金額
  * @param otherEachMonthFee 毎月掛かるその他金額
  */
+@Parcelize
 data class RealRent(
     val baseRent: BaseRent,
     val managementFee: ManagementFee,
     val reikin: Reikin,
     val oneshotFee: Long = 0,
     val otherEachMonthFee: Long = 0,
-) {
+) : Parcelable {
     init {
         require(oneshotFee >= 0)
         require(otherEachMonthFee >= 0)
@@ -36,21 +40,24 @@ data class RealRent(
 }
 
 @JvmInline
-value class BaseRent(val price: Long) {
+@Parcelize
+value class BaseRent(val price: Long) : Parcelable {
     init {
         require(price > 0)
     }
 }
 
 @JvmInline
-value class ManagementFee(val price: Long) {
+@Parcelize
+value class ManagementFee(val price: Long) : Parcelable {
     init {
         require(price >= 0)
     }
 }
 
 @JvmInline
-value class Reikin(val price: Long) {
+@Parcelize
+value class Reikin(val price: Long) : Parcelable {
     init {
         require(price >= 0)
     }

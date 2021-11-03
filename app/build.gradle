@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.parcelize'
     id 'org.jmailen.kotlinter'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
@@ -19,7 +20,8 @@ android {
     defaultConfig {
         applicationId "com.github.daneko.tubotan"
         minSdk 22
-        targetSdk 31
+        // TODO PendingIntentを使ってはいないはずだが、それ関係で死ぬ
+        targetSdk 30
         versionCode 1
         versionName "1.0"
 
@@ -90,6 +92,11 @@ android {
     testOptions {
         unitTests.all {
             useJUnitPlatform()
+            testLogging {
+                showStandardStreams true
+                events 'started', 'skipped', 'passed', 'failed'
+                exceptionFormat 'full'
+            }
         }
     }
 }
@@ -99,8 +106,6 @@ dependencies {
     // compose
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
-    // TODO replace from material to material3
-    implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material3:material3:1.0.0-alpha01"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
@@ -127,10 +132,14 @@ dependencies {
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
-    testImplementation 'io.kotest:kotest-runner-junit5:4.6.3'
+    def kotestVersion = '4.6.3'
+    testImplementation "io.kotest:kotest-runner-junit5:$kotestVersion"
+    testImplementation "io.kotest:kotest-framework-datatest:$kotestVersion"
+    testImplementation 'io.kotest.extensions:kotest-extensions-robolectric:0.4.0'
+    testImplementation 'androidx.test:core-ktx:1.4.0'
+
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 }
-

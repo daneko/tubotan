@@ -4,9 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,119 +13,73 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import arrow.core.Either
 import arrow.core.computations.either
-import arrow.core.left
-import arrow.core.rightIfNotNull
-import com.github.daneko.tubotan.R
-import com.github.daneko.tubotan.model.estate.EstatePrice
-import com.github.daneko.tubotan.model.estate.OccupiedArea
+import arrow.core.computations.nullable
+import com.github.daneko.android.text.Text
+import com.github.daneko.tubotan.model.estate.TuboTanka as TuboTankaValue
 
 @Preview
 @Composable
 fun TuboTanka() {
-    var estatePrice: Either<String, EstatePrice> by remember { mutableStateOf("".left()) }
-    var occupiedArea: Either<String, OccupiedArea> by remember { mutableStateOf("".left()) }
-    val tuboTankaResult: Either<String, String> by produceState<Either<String, String>>(
-        initialValue = "".left(),
-        key1 = estatePrice,
-        key2 = occupiedArea,
+
+    val context = LocalContext.current
+
+    var estatePriceInput by remember { mutableStateOf(TextFieldValue()) }
+    val estatePriceState by rememberEstatePriceEither(yen10_000 = estatePriceInput.text)
+
+    var occupiedAreaInput by remember { mutableStateOf(TextFieldValue()) }
+    val occupiedAreaState by rememberOccupiedAreaEither(meter2 = occupiedAreaInput.text)
+
+    val tuboTankaResult by produceState<Either<String, Text>?>(
+        initialValue = null,
+        key1 = estatePriceState,
+        key2 = occupiedAreaState,
     ) {
-        value = either {
-            val price = estatePrice.bind()
-            val area = occupiedArea.bind()
-            val tuboTanka = (price.value.toDouble() / area.getTuboValue()) / 10000.0
-            "%.2f".format(tuboTanka)
+        value = nullable {
+            val ep = estatePriceState.bind()
+            val oa = occupiedAreaState.bind()
+            either {
+                val price = ep.bind()
+                val area = oa.bind()
+                TuboTankaValue(price, area).formatted()
+            }
         }
     }
 
     Column {
-        EstatePriceInput {
-            estatePrice = it
-        }
+
+        EstatePriceInput(
+            value = estatePriceInput,
+            onValueChange = { estatePriceInput = it },
+            either = estatePriceState,
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        OccupiedAreaInput {
-            occupiedArea = it
-        }
+        OccupiedAreaInput(
+            value = occupiedAreaInput,
+            onValueChange = { occupiedAreaInput = it },
+            either = occupiedAreaState,
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        tuboTankaResult.fold(
+        tuboTankaResult?.fold(
             ifLeft = {},
             ifRight = {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "$it ${stringResource(id = R.string.label_tubo_tanka_unit)}",
-                    style = MaterialTheme.typography.subtitle1,
+                    text = it.get(context),
+                    style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                 )
             }
         )
     }
-}
-
-@Preview
-@Composable
-fun EstatePriceInput(
-    onResult: (Either<String, EstatePrice>) -> Unit = {},
-) {
-    TextFieldWithError(
-        modifier = Modifier.fillMaxWidth(),
-        onValueChange = {
-            either<String, EstatePrice> {
-                val price = it.text.toIntOrNull().rightIfNotNull { "数字を入力してください" }.bind()
-                runCatching { EstatePrice.createBy(price) }.bind { "0以上の20000以下で入力してください" }
-            }.apply(onResult)
-        },
-        errorValue = { AnnotatedString(it) },
-        label = {
-            Text(stringResource(R.string.label_estate_price))
-        },
-        placeholder = { Text(text = "4000") },
-        trailingIcon = {
-            Text(stringResource(R.string.label_price_unit))
-        },
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Number,
-        ),
-        singleLine = true,
-        maxLines = 1,
-    )
-}
-
-@Preview
-@Composable
-fun OccupiedAreaInput(
-    onResult: (Either<String, OccupiedArea>) -> Unit = {},
-) {
-    TextFieldWithError(
-        modifier = Modifier.fillMaxWidth(),
-        onValueChange = {
-            either<String, OccupiedArea> {
-                val m2 = it.text.toDoubleOrNull().rightIfNotNull { "数値を入力してください" }.bind()
-                runCatching { OccupiedArea.createByM2(m2) }.bind { "専有/延床面積を入力してください" }
-            }.apply(onResult)
-        },
-        errorValue = { AnnotatedString(it) },
-        label = {
-            Text(stringResource(R.string.label_occupied_area))
-        },
-        placeholder = { Text(text = "67.24") },
-        trailingIcon = {
-            Text(stringResource(R.string.label_occupied_area_unit_m2))
-        },
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Number,
-        ),
-        singleLine = true,
-        maxLines = 1,
-    )
 }

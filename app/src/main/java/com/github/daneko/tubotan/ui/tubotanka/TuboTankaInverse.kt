@@ -13,7 +13,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,21 +21,23 @@ import androidx.compose.ui.unit.dp
 import arrow.core.Either
 import arrow.core.computations.either
 import arrow.core.computations.nullable
-import arrow.core.left
-import com.github.daneko.math.times
-import com.github.daneko.tubotan.R
+import com.github.daneko.tubotan.model.estate.EstatePrice
 import com.github.daneko.tubotan.model.estate.OccupiedArea
+import com.github.daneko.tubotan.model.estate.TuboTanka
 import timber.log.Timber
 
 @Preview
 @Composable
 fun TuboTankaInverse() {
 
-    var tuboTankaInput by remember { mutableStateOf(TextFieldValue()) }
-    var tuboTanka: Either<String, Int>? by remember { mutableStateOf(null) }
-    var occupiedArea: Either<String, OccupiedArea> by remember { mutableStateOf("".left()) }
+    val context = LocalContext.current
 
-    val result by produceState<Either<String, String>?>(
+    var tuboTankaInput by remember { mutableStateOf(TextFieldValue()) }
+    var occupiedAreaInput by remember { mutableStateOf(TextFieldValue()) }
+    val tuboTanka: Either<String, TuboTanka>? by rememberTuboTankaEither(tanka = tuboTankaInput.text)
+    val occupiedArea: Either<String, OccupiedArea>? by rememberOccupiedAreaEither(meter2 = occupiedAreaInput.text)
+
+    val result by produceState<Either<String, EstatePrice>?>(
         initialValue = null,
         key1 = tuboTanka,
         key2 = occupiedArea,
@@ -43,9 +45,9 @@ fun TuboTankaInverse() {
         value = nullable {
             either {
                 val tanka = tuboTanka.bind().bind()
-                val area = occupiedArea.bind()
+                val area = occupiedArea.bind().bind()
                 Timber.d("tanka : $tanka, area : $area")
-                (area.getTuboValue() * tanka.toDouble()).toInt().toString()
+                EstatePrice.createBy(tanka, area)
             }
         }
     }
@@ -63,11 +65,10 @@ fun TuboTankaInverse() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // TODO
         OccupiedAreaInput(
-            value = TextFieldValue(),
-            onValueChange = {},
-            either = null,
+            value = occupiedAreaInput,
+            onValueChange = { occupiedAreaInput = it },
+            either = occupiedArea,
         )
         Spacer(modifier = Modifier.height(24.dp))
         result?.fold(
@@ -75,7 +76,7 @@ fun TuboTankaInverse() {
             ifRight = {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "$it ${stringResource(id = R.string.label_price_unit)}",
+                    text = it.formatted().get(context),
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                 )

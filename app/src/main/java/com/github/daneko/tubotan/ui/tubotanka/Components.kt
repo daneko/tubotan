@@ -15,6 +15,7 @@ import arrow.core.Either
 import com.github.daneko.tubotan.R
 import com.github.daneko.tubotan.model.estate.EstatePrice
 import com.github.daneko.tubotan.model.estate.OccupiedArea
+import com.github.daneko.tubotan.model.estate.TuboTanka
 import com.github.daneko.tubotan.ui.components.TextFieldWithEither
 
 @Composable
@@ -92,10 +93,20 @@ fun OccupiedAreaInput(
 }
 
 @Composable
+fun rememberTuboTankaEither(tanka: String): State<Either<String, TuboTanka>?> =
+    produceState<Either<String, TuboTanka>?>(
+        initialValue = null,
+        key1 = tanka,
+        producer = {
+            value = if (tanka.isBlank()) null else TuboTanka.createBy(tanka)
+        },
+    )
+
+@Composable
 fun TuboTankaInput(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
-    either: Either<String, Int>?,
+    either: Either<String, TuboTanka>?,
 ) {
     TextFieldWithEither(
         modifier = Modifier.fillMaxWidth(),

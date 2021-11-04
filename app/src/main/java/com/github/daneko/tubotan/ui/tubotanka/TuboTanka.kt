@@ -47,7 +47,7 @@ fun TuboTanka() {
             either {
                 val price = ep.bind()
                 val area = oa.bind()
-                TuboTankaValue(price, area).formatted()
+                TuboTankaValue.createBy(price, area).formatted()
             }
         }
     }

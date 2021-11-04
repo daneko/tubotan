@@ -1,17 +1,21 @@
 package com.github.daneko.tubotan.model.estate
 
+import arrow.core.Either
+import arrow.core.computations.either
+import arrow.core.rightIfNotNull
 import com.github.daneko.android.text.Text
 import com.github.daneko.math.div
+import com.github.daneko.math.times
 import com.github.daneko.tubotan.R
 import java.math.BigDecimal
 
-data class TuboTanka(
-    val price: EstatePrice,
-    val occupiedArea: OccupiedArea,
+/**
+ * @property tanka : yen
+ */
+@JvmInline
+value class TuboTanka internal constructor(
+    val tanka: BigDecimal,
 ) {
-
-    val tanka = price / occupiedArea
-
     /**
      * xxx.yy 万円/坪
      */
@@ -24,5 +28,23 @@ data class TuboTanka(
         internal operator fun EstatePrice.div(area: OccupiedArea): BigDecimal {
             return this.value.toBigDecimal() / area.getTuboValue()
         }
+
+        fun createBy(
+            price: EstatePrice,
+            occupiedArea: OccupiedArea,
+        ): TuboTanka {
+            return TuboTanka(price / occupiedArea)
+        }
+
+        /**
+         * @param yen10_000 : e.g 300.0, 300
+         */
+        suspend fun createBy(
+            yen10_000: String,
+        ): Either<String, TuboTanka> =
+            either {
+                val price = yen10_000.toBigDecimalOrNull().rightIfNotNull { "数字を入力してください" }.bind()
+                TuboTanka((price * 10_000L).setDefaultScale())
+            }
     }
 }

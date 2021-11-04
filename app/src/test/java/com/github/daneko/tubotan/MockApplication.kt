@@ -7,7 +7,6 @@ import timber.log.Timber
 class MockApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        println("hogeee")
         if (Timber.treeCount == 0) {
             Timber.plant(TestTree())
         }

@@ -6,8 +6,8 @@ task clean(type: Delete) {
 
 buildscript {
     ext {
-        compose_version = '1.1.0-beta01'
-        arrow_version = '1.0.0'
+        compose_version = '1.1.0-beta02'
+        arrow_version = '1.0.1'
         accompanist_version = '0.20.0'
     }
 }

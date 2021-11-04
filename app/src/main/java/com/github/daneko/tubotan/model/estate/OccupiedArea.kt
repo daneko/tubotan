@@ -8,7 +8,6 @@ import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-
 data class OccupiedArea internal constructor(
     private val m2: BigDecimal,
     private val tubo: BigDecimal,

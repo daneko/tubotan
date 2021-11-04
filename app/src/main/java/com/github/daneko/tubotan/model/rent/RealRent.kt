@@ -1,7 +1,10 @@
 package com.github.daneko.tubotan.model.rent
 
 import android.os.Parcelable
+import com.github.daneko.math.div
+import com.github.daneko.math.times
 import kotlinx.parcelize.Parcelize
+import java.math.BigInteger
 
 /**
  * @param baseRent 月家賃
@@ -15,58 +18,60 @@ data class RealRent(
     val baseRent: BaseRent,
     val managementFee: ManagementFee,
     val reikin: Reikin,
-    val oneshotFee: Long = 0,
-    val otherEachMonthFee: Long = 0,
+    val oneshotFee: BigInteger = BigInteger.ZERO,
+    val otherEachMonthFee: BigInteger = BigInteger.ZERO,
 ) : Parcelable {
     init {
-        require(oneshotFee >= 0)
-        require(otherEachMonthFee >= 0)
+        require(oneshotFee >= BigInteger.ZERO)
+        require(otherEachMonthFee >= BigInteger.ZERO)
     }
 
-    // TODO 計算結果を考えるとやっぱりBigDecimalじゃないと？？ (テストケース確認)
-    fun calcRealRent(byYear: Long): Long {
+    fun calcRealRent(byYear: Long): BigInteger {
         require(byYear > 0)
         val monthCount = byYear * 12
         val monthFee = baseRent.price +
             managementFee.price +
             otherEachMonthFee
         val oneshotTotalFee = reikin.price + oneshotFee
-        return if (oneshotTotalFee == 0L) {
+        return if (oneshotTotalFee == BigInteger.ZERO) {
             monthFee
         } else {
-            (monthFee * monthCount + oneshotTotalFee) / monthCount
+            ((monthFee * monthCount + oneshotTotalFee) / monthCount).toBigInteger()
         }
     }
 }
 
 @JvmInline
 @Parcelize
-value class BaseRent(val price: Long) : Parcelable {
+value class BaseRent(val price: BigInteger) : Parcelable {
+    constructor(p: Long) : this(p.toBigInteger())
+
     init {
-        require(price > 0)
+        require(price > BigInteger.ZERO)
     }
 }
 
 @JvmInline
 @Parcelize
-value class ManagementFee(val price: Long) : Parcelable {
+value class ManagementFee(val price: BigInteger) : Parcelable {
+    constructor(p: Long) : this(p.toBigInteger())
     init {
-        require(price >= 0)
+        require(price >= BigInteger.ZERO)
     }
 }
 
 @JvmInline
 @Parcelize
-value class Reikin(val price: Long) : Parcelable {
+value class Reikin(val price: BigInteger) : Parcelable {
     init {
-        require(price >= 0)
+        require(price >= BigInteger.ZERO)
     }
 
     companion object {
-        val Zero = Reikin(0)
+        val Zero = Reikin(BigInteger.ZERO)
         fun createByMonthCount(monthCount: Double, baseRent: BaseRent): Reikin {
             require(monthCount >= 0)
-            return Reikin((monthCount * baseRent.price).toLong())
+            return Reikin((monthCount * baseRent.price).toBigInteger())
         }
     }
 }

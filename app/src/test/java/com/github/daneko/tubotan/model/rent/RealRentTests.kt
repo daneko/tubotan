@@ -9,8 +9,6 @@ class RealRentTests : FunSpec({
             baseRent = BaseRent(100_000L),
             managementFee = ManagementFee(0L),
             reikin = Reikin.Zero,
-            oneshotFee = 0L,
-            otherEachMonthFee = 0L,
         )
         target.calcRealRent(1).shouldBe(target.baseRent.price)
     }
@@ -21,10 +19,9 @@ class RealRentTests : FunSpec({
             baseRent = baseRent,
             managementFee = ManagementFee(10_000L),
             reikin = Reikin.createByMonthCount(2.0, baseRent),
-            oneshotFee = 0L,
-            otherEachMonthFee = 500L,
+            otherEachMonthFee = 500.toBigInteger(),
         )
-        target.calcRealRent(1).shouldBe(127_167L)
-        target.calcRealRent(2).shouldBe(118_833L)
+        target.calcRealRent(1).shouldBe(127_167.toBigInteger())
+        target.calcRealRent(2).shouldBe(118_833.toBigInteger())
     }
 })

@@ -5,7 +5,7 @@ pluginManagement {
         mavenCentral()
     }
     plugins {
-        def asPluginVersion = '7.1.0-beta02'
+        def asPluginVersion = '7.1.0-beta03'
         def kotlinVersion = '1.5.31'
         id 'com.android.application' version asPluginVersion
         id 'com.android.library' version asPluginVersion

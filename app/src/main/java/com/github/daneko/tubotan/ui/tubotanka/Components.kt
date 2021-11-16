@@ -2,6 +2,8 @@ package com.github.daneko.tubotan.ui.tubotanka
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -80,7 +82,12 @@ fun OccupiedAreaInput(
         label = {
             Text(stringResource(R.string.label_occupied_area))
         },
-        placeholder = { Text(text = "67.24") },
+        placeholder = {
+            Text(
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = ContentAlpha.medium),
+                text = "67.24",
+            )
+        },
         trailingIcon = {
             Text(stringResource(R.string.label_occupied_area_unit_m2))
         },

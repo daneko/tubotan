@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -27,6 +28,8 @@ fun TuboTankaPager() {
     Column {
         ScrollableTabRow(
             selectedTabIndex = pagerState.currentPage,
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ) {
             // Add tabs for all of our pages
             pageTitles.forEachIndexed { index, title ->

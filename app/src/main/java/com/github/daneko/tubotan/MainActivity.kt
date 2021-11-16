@@ -3,16 +3,18 @@ package com.github.daneko.tubotan
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.daneko.android.components.AdmobAdBanner
 import com.github.daneko.tubotan.ui.theme.TubotanTheme
+import com.github.daneko.tubotan.ui.tubotanka.TuboTankaPager
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.android.gms.ads.MobileAds
 
@@ -41,10 +43,12 @@ fun RootContentScreen() {
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
-            Text(
-                modifier = Modifier.weight(1.0f),
-                text = "Android"
-            )
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .weight(1.0f)
+            ){
+               TuboTankaPager()
+            }
             AdmobAdBanner()
         }
     }

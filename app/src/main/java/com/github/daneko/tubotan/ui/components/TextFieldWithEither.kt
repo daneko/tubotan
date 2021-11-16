@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.TextField
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -51,7 +51,7 @@ fun <A, B> TextFieldWithEither(
     }
 
     Column {
-        TextField(
+        OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = modifier,

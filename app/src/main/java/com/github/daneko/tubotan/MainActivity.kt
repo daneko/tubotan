@@ -43,11 +43,12 @@ fun RootContentScreen() {
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1.0f)
-            ){
-               TuboTankaPager()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.0f)
+            ) {
+                TuboTankaPager()
             }
             AdmobAdBanner()
         }

@@ -20,8 +20,7 @@ android {
     defaultConfig {
         applicationId "com.github.daneko.tubotan"
         minSdk 22
-        // TODO PendingIntentを使ってはいないはずだが、それ関係で死ぬ
-        targetSdk 30
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -118,6 +117,9 @@ dependencies {
     // androidx
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'androidx.activity:activity-compose:1.4.0'
+    // for ad
+    // https://developers.google.com/admob/android/rel-notes#20.4.0
+    implementation('androidx.work:work-runtime:2.7.1')
 
     // firebase
     implementation platform("com.google.firebase:firebase-bom:29.0.0")

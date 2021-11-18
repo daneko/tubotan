@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.github.daneko.tubotan">
 
-    <application>
+    <application
+        android:name=".DebugApp"
+        tools:replace="android:name">
 
         <activity
             android:name=".DebugMenuActivity"
             android:exported="true"
             android:label="debug menu"
-            android:theme="@style/Theme.Tubotan"></activity>
+            android:theme="@style/Theme.Tubotan" />
     </application>
 
 </manifest>

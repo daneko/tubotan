@@ -26,7 +26,7 @@ value class TuboTanka internal constructor(
 
     companion object {
         internal operator fun EstatePrice.div(area: OccupiedArea): BigDecimal {
-            return this.value.toBigDecimal() / area.getTuboValue()
+            return this.value.setDefaultScale() / area.getTuboValue()
         }
 
         fun createBy(

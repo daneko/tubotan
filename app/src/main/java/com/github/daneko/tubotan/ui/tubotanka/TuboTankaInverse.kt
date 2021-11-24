@@ -26,7 +26,10 @@ import com.github.daneko.tubotan.model.estate.OccupiedArea
 import com.github.daneko.tubotan.model.estate.TuboTanka
 import timber.log.Timber
 
-@Preview
+@Preview(
+    showBackground = true,
+    backgroundColor = android.graphics.Color.WHITE.toLong(),
+)
 @Composable
 fun TuboTankaInverse() {
 
@@ -55,6 +58,8 @@ fun TuboTankaInverse() {
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
+        Spacer(modifier = Modifier.height(24.dp))
+
         TuboTankaInput(
             value = tuboTankaInput,
             onValueChange = {

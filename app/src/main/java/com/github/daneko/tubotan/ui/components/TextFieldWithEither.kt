@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -22,6 +22,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import arrow.core.Either
 
+/**
+ * @param label LocalContentColor/LocalTextStyle(not material3)に依存している ただし、合わないのでColorだけ使うことをおすすめ
+ * @param placeholder LocalContentColorに依存している
+ */
 @Composable
 fun <A, B> TextFieldWithEither(
     modifier: Modifier = Modifier,
@@ -42,7 +46,9 @@ fun <A, B> TextFieldWithEither(
     singleLine: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
+        backgroundColor = MaterialTheme.colorScheme.surface,
+    ),
 ) {
 
     val (isError, errorValue) = when (either) {
@@ -51,7 +57,7 @@ fun <A, B> TextFieldWithEither(
     }
 
     Column {
-        OutlinedTextField(
+        TextField(
             value = value,
             onValueChange = onValueChange,
             modifier = modifier,

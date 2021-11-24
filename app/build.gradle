@@ -117,9 +117,6 @@ dependencies {
     // androidx
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'androidx.activity:activity-compose:1.4.0'
-    // for ad
-    // https://developers.google.com/admob/android/rel-notes#20.4.0
-    implementation('androidx.work:work-runtime:2.7.1')
 
     // firebase
     implementation platform("com.google.firebase:firebase-bom:29.0.0")
@@ -128,7 +125,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
 
     // ad
-    implementation 'com.google.android.gms:play-services-ads:20.4.0'
+    implementation 'com.google.android.gms:play-services-ads:20.5.0'
 
     implementation 'com.google.android.material:material:1.5.0-beta01'
 

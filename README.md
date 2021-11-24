@@ -9,3 +9,5 @@
 - 購入ローン計算
 - 表面利回り計算
 - 坪単価計算
+  - 係数の表示
+-  TopAppBar/BottomNavigation

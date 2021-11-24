@@ -2,8 +2,7 @@ package com.github.daneko.tubotan.ui.tubotanka
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -43,9 +42,17 @@ fun EstatePriceInput(
         either = either,
         getErrorValue = { AnnotatedString(it) },
         label = {
-            Text(stringResource(R.string.label_estate_price))
+            Text(
+                text = stringResource(R.string.label_estate_price),
+                color = LocalContentColor.current,
+            )
         },
-        placeholder = { Text(text = "4000") },
+        placeholder = {
+            Text(
+                text = "4000",
+                color = LocalContentColor.current,
+            )
+        },
         trailingIcon = {
             Text(stringResource(R.string.label_price_unit))
         },
@@ -80,12 +87,15 @@ fun OccupiedAreaInput(
         either = either,
         getErrorValue = { AnnotatedString(it) },
         label = {
-            Text(stringResource(R.string.label_occupied_area))
+            Text(
+                text = stringResource(R.string.label_occupied_area),
+                color = LocalContentColor.current,
+            )
         },
         placeholder = {
             Text(
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = ContentAlpha.medium),
                 text = "67.24",
+                color = LocalContentColor.current,
             )
         },
         trailingIcon = {
@@ -122,9 +132,17 @@ fun TuboTankaInput(
         either = either,
         getErrorValue = { AnnotatedString(it) },
         label = {
-            Text(stringResource(R.string.label_tubo_tanka))
+            Text(
+                text = stringResource(R.string.label_tubo_tanka),
+                color = LocalContentColor.current,
+            )
         },
-        placeholder = { Text(text = "40") },
+        placeholder = {
+            Text(
+                text = "40",
+                color = LocalContentColor.current,
+            )
+        },
         trailingIcon = {
             Text(stringResource(R.string.label_tubo_tanka_unit))
         },

@@ -21,10 +21,12 @@ import androidx.compose.ui.unit.dp
 import arrow.core.Either
 import arrow.core.computations.either
 import arrow.core.computations.nullable
-import com.github.daneko.android.text.Text
 import com.github.daneko.tubotan.model.estate.TuboTanka as TuboTankaValue
 
-@Preview
+@Preview(
+    showBackground = true,
+    backgroundColor = android.graphics.Color.WHITE.toLong(),
+)
 @Composable
 fun TuboTanka() {
 
@@ -36,7 +38,7 @@ fun TuboTanka() {
     var occupiedAreaInput by remember { mutableStateOf(TextFieldValue()) }
     val occupiedAreaState by rememberOccupiedAreaEither(meter2 = occupiedAreaInput.text)
 
-    val tuboTankaResult by produceState<Either<String, Text>?>(
+    val tuboTankaResult by produceState<Either<String, TuboTankaValue>?>(
         initialValue = null,
         key1 = estatePriceState,
         key2 = occupiedAreaState,
@@ -47,12 +49,13 @@ fun TuboTanka() {
             either {
                 val price = ep.bind()
                 val area = oa.bind()
-                TuboTankaValue.createBy(price, area).formatted()
+                TuboTankaValue.createBy(price, area)
             }
         }
     }
 
     Column {
+        Spacer(modifier = Modifier.height(24.dp))
 
         EstatePriceInput(
             value = estatePriceInput,
@@ -75,8 +78,8 @@ fun TuboTanka() {
             ifRight = {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = it.get(context),
-                    style = MaterialTheme.typography.bodyLarge,
+                    text = it.formatted().get(context),
+                    style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                 )
             }

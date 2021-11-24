@@ -12,10 +12,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -90,13 +92,23 @@ fun ShowColorComponent(
             contentAlignment = Alignment.Center,
 
         ) {
-            Text(text = name)
+            Text(
+                text = name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(0.6f)
-                .background(color = color)
-        )
+                .background(color = color),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "contentColorFor",
+                color = MaterialTheme.colorScheme.contentColorFor(color),
+            )
+        }
     }
 }

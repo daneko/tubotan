@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun TuboTankaPager() {
+
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
 
@@ -27,7 +28,7 @@ fun TuboTankaPager() {
             scope.launch {
                 pagerState.animateScrollToPage(pageIndex)
             }
-        }
+        },
     ) { page ->
         Box(
             modifier = Modifier.fillMaxSize(),

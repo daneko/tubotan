@@ -1,6 +1,7 @@
 package com.github.daneko.tubotan.ui.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRowDefaults
@@ -9,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerScope
@@ -47,7 +49,9 @@ fun <A> TabContent(
             }
         }
         HorizontalPager(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp),
             count = contents.size,
             state = pagerState,
         ) { page ->
